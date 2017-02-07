@@ -3,13 +3,11 @@
 #include "Package.h"
 #include <chrono>
 #include <iostream>
-#include "StringPointerException.h"
+#include "HapticsLoadingException.h"
 
-AssetToolsLibrary::AssetToolsLibrary(const char* dir):
-	_fileEnumerator(dir)
+AssetToolsLibrary::AssetToolsLibrary()
 {
 	
-	Rescan();
 
 	
 }
@@ -19,20 +17,31 @@ AssetToolsLibrary::~AssetToolsLibrary()
 {
 }
 
-void AssetToolsLibrary::Rescan()
+int AssetToolsLibrary::InitializeFromDirectory(const char * dir)
+{
+	//calling this multiple times will destroy and recreate the enumerator
+	_fileEnumerator = std::make_unique<HapticDirectoryTools::HapticEnumerator>(dir);
+
+	//after creation, tell the enumerator to scan the directories
+	return Rescan();
+}
+
+int AssetToolsLibrary::Rescan()
 {
 	//smart logic later
 	try {
-		auto packages = _fileEnumerator.EnumeratePackages();
-		_rootPackage = _fileEnumerator.GeneratePackageTree(_fileEnumerator.GetAllFiles(packages));
+		auto packages = _fileEnumerator->EnumeratePackages();
+		_rootPackage = _fileEnumerator->GeneratePackageTree(_fileEnumerator->GetAllFiles(packages));
 		_packageMap = HapticDirectoryTools::GetPackageMap(packages);
+		return true;
 	}
-	catch (const StringPointerException& ex) {
-		
+	catch (const HapticsLoadingException& ex) {
+		_lastErrorString = ex.what();
+		return false;
 	}
 }
 
-bool AssetToolsLibrary::IsPackage(const char * dir, PackageInfo & info)
+int AssetToolsLibrary::CheckIfPackage(const char * dir, PackageInfo & info, bool& isPackage)
 {
 	if (_packageMap.find(boost::filesystem::path(dir)) != _packageMap.end()) {
 		std::fill(info.Namespace, info.Namespace + 128, 0);
@@ -47,11 +56,13 @@ bool AssetToolsLibrary::IsPackage(const char * dir, PackageInfo & info)
 		info.Version[127] = 0;
 		std::copy(package.Package.cbegin(), package.Package.cend(), info.Namespace);
 		info.Namespace[127] = 0;
-		return true;
+		isPackage = true;
 	}
 	else {
-		return false;
+		isPackage = false;
 	}
+
+	return true;
 }
 
 char * AssetToolsLibrary::GetError()

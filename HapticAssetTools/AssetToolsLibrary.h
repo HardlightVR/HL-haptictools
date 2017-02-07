@@ -8,14 +8,14 @@ class AssetToolsLibrary
 {
 public:
 
-	AssetToolsLibrary(const char* dir);
+	AssetToolsLibrary();
 	~AssetToolsLibrary();
-
-	void Rescan();
-	bool IsPackage(const char* dir, PackageInfo& info);
+	int InitializeFromDirectory(const char* dir);
+	int Rescan();
+	int CheckIfPackage(const char* dir, PackageInfo& info, bool& isPackage);
 	char* GetError();
 private:
-	HapticDirectoryTools::HapticEnumerator _fileEnumerator;
+	std::unique_ptr<HapticDirectoryTools::HapticEnumerator> _fileEnumerator;
 	HapticDirectoryTools::PackageNode _rootPackage;
 	std::unordered_map<boost::filesystem::path, HapticDirectoryTools::HapticConfig> _packageMap;
 

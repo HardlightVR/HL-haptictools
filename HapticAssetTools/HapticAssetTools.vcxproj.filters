@@ -39,7 +39,7 @@
     <ClInclude Include="ijsonserializable.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="StringPointerException.h">
+    <ClInclude Include="HapticsLoadingException.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

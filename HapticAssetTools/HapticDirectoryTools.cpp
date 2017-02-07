@@ -6,7 +6,7 @@
 #include <boost/algorithm/string.hpp>
 #include "rapidjson\document.h"
 #include "rapidjson\istreamwrapper.h"
-#include "StringPointerException.h"
+#include "HapticsLoadingException.h"
 
 
 using namespace HapticDirectoryTools;
@@ -20,10 +20,10 @@ public:
 		std::runtime_error(std::string("Key '" + key + "' has an invalid value or is not present").c_str()) {}
 };
 
-class HapticsRootDirectoryNotFound : public StringPointerException {
+class HapticsRootDirectoryNotFound : public HapticsLoadingException {
 public:
-	HapticsRootDirectoryNotFound(const char* errString) :
-		StringPointerException(errString) {}
+	HapticsRootDirectoryNotFound(std::string err) :
+		HapticsLoadingException(err) {}
 };
 
 PackageNode::PackageNode()
@@ -132,7 +132,7 @@ PackageNode HapticEnumerator::GeneratePackageTree(const std::vector<HapticFileNa
 		return dirs;
 	}
 	else {
-		throw HapticsRootDirectoryNotFound(HapticEnumerator::DirectoryNotFoundString);
+		throw HapticsRootDirectoryNotFound("The root directory " + path + " was not found");
 	}
 	
 }

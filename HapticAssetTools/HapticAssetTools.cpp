@@ -17,9 +17,14 @@ int NSAT_IsCompatibleDLL(void)
 	return major == NS_ASSETTOOLS_VERSION_MAJOR;
 }
 
-NS_ASSETTOOLS_API NSAT_Context_t * __stdcall NSAT_InitializeFromDirectory(const char * string)
+NS_ASSETTOOLS_API NSAT_Context_t * __stdcall NSAT_Create()
 {
-	return AS_TYPE(NSAT_Context_t, new AssetToolsLibrary(string));
+	return AS_TYPE(NSAT_Context_t, new AssetToolsLibrary());
+}
+
+NS_ASSETTOOLS_API int __stdcall NSAT_InitializeFromDirectory(NSAT_Context_t* context, const char * dir)
+{
+	return AS_TYPE(AssetToolsLibrary, context)->InitializeFromDirectory(dir);
 }
 
 NS_ASSETTOOLS_API void __stdcall NSAT_Delete(NSAT_Context_t * context)
@@ -32,22 +37,22 @@ NS_ASSETTOOLS_API void __stdcall NSAT_Delete(NSAT_Context_t * context)
 
 }
 
-NS_ASSETTOOLS_API void __stdcall NSAT_RescanFilesystem(NSAT_Context_t * context)
+NS_ASSETTOOLS_API int __stdcall NSAT_RescanFilesystem(NSAT_Context_t * context)
 {
-	AS_TYPE(AssetToolsLibrary, context)->Rescan();
+	return AS_TYPE(AssetToolsLibrary, context)->Rescan();
 }
 
-NS_ASSETTOOLS_API int __stdcall NSAT_IsPackage(NSAT_Context_t* context, const char* dir, PackageInfo& info)
+NS_ASSETTOOLS_API int __stdcall NSAT_CheckIfPackage(NSAT_Context_t* context, const char* dir, PackageInfo& info, bool& isPackage)
 {
-	return AS_TYPE(AssetToolsLibrary, context)->IsPackage(dir, info);
+	return AS_TYPE(AssetToolsLibrary, context)->CheckIfPackage(dir, info, isPackage);
 }
 
-NS_ASSETTOOLS_API char * __stdcall GetError(NSAT_Context_t * context)
+NS_ASSETTOOLS_API char * __stdcall NSAT_GetError(NSAT_Context_t * context)
 {
 	return AS_TYPE(AssetToolsLibrary, context)->GetError();
 }
 
-NS_ASSETTOOLS_API void __stdcall FreeError(char * stringPointer)
+NS_ASSETTOOLS_API void __stdcall NSAT_FreeError(char * stringPointer)
 {
 	delete[] stringPointer;
 	stringPointer = nullptr;

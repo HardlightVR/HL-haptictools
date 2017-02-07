@@ -61,7 +61,7 @@ namespace HapticDirectoryTools {
 		static const char* DirectoryNotFoundString;
 
 		typedef std::tuple<boost::filesystem::path, HapticConfig> package;
-
+		
 		HapticEnumerator(const std::string& path);
 		~HapticEnumerator();
 

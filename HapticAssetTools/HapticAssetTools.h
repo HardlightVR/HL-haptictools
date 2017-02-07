@@ -27,16 +27,18 @@ extern "C" {
 	unsigned int NS_ASSETTOOLS_API NSAT_GetVersion(void);
 	int NSAT_IsCompatibleDLL(void);
 
-	NS_ASSETTOOLS_API NSAT_Context_t* __stdcall  NSAT_InitializeFromDirectory(const char* string);
+	NS_ASSETTOOLS_API NSAT_Context_t* __stdcall NSAT_Create();
+
+	NS_ASSETTOOLS_API int __stdcall  NSAT_InitializeFromDirectory(NSAT_Context_t* context, const char* string);
 	
 	NS_ASSETTOOLS_API void __stdcall NSAT_Delete(NSAT_Context_t* context);
 
-	NS_ASSETTOOLS_API void __stdcall NSAT_RescanFilesystem(NSAT_Context_t* context);
+	NS_ASSETTOOLS_API int __stdcall NSAT_RescanFilesystem(NSAT_Context_t* context);
 
-	NS_ASSETTOOLS_API int __stdcall NSAT_IsPackage(NSAT_Context_t* context, const char* dir, PackageInfo& info);
+	NS_ASSETTOOLS_API int __stdcall NSAT_CheckIfPackage(NSAT_Context_t* context, const char* dir, PackageInfo& info, bool& isPackage);
 		
-	NS_ASSETTOOLS_API char* __stdcall GetError(NSAT_Context_t* context);
-	NS_ASSETTOOLS_API void __stdcall FreeError(char* stringPointer);
+	NS_ASSETTOOLS_API char* __stdcall NSAT_GetError(NSAT_Context_t* context);
+	NS_ASSETTOOLS_API void __stdcall NSAT_FreeError(char* stringPointer);
 
 
 #ifdef __cplusplus 
