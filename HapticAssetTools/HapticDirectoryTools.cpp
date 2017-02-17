@@ -6,7 +6,6 @@
 #include <boost/algorithm/string.hpp>
 #include "rapidjson\document.h"
 #include "rapidjson\istreamwrapper.h"
-#include "HapticsLoadingException.h"
 
 
 using namespace HapticDirectoryTools;
@@ -14,17 +13,7 @@ using namespace boost::filesystem;
 
 
 
-class JsonValueInvalidException : public std::runtime_error {
-public:
-	JsonValueInvalidException(const std::string& key) : 
-		std::runtime_error(std::string("Key '" + key + "' has an invalid value or is not present").c_str()) {}
-};
 
-class HapticsRootDirectoryNotFound : public HapticsLoadingException {
-public:
-	HapticsRootDirectoryNotFound(std::string err) :
-		HapticsLoadingException(err) {}
-};
 
 PackageNode::PackageNode()
 {
@@ -64,29 +53,7 @@ HapticConfig::~HapticConfig()
 }
 
 
-template<class T>
-T parseKeyOrThrow(const rapidjson::Value& root, const char* key)
-{
-	rapidjson::Value::ConstMemberIterator itr = root.FindMember(key);
-	if (itr != root.MemberEnd()) {
-		return itr->value.Get<T>();
-	}
-	else {
-		throw JsonValueInvalidException(key);
-	}
 
-}
-
-template<class T>
-T parseKeyOrDefault(const rapidjson::Value& root, const char* key, T defaultVal) {
-	rapidjson::Value::ConstMemberIterator itr = root.FindMember(key);
-	if (itr != root.MemberEnd()) {
-		return itr->value.Get<T>();
-	}
-	else {
-		return defaultVal;
-	}
-}
 
 void HapticConfig::Deserialize(const rapidjson::Value& root)
 {
@@ -294,3 +261,11 @@ void HapticEnumerator::insert(PackageNode& node,  HapticFileNameList& list) cons
 	
 }
 
+void findKeyOrThrow(const rapidjson::Value & root, const char * key)
+{
+	rapidjson::Value::ConstMemberIterator itr = root.FindMember(key);
+	if (itr == root.MemberEnd()) {
+
+		throw JsonValueInvalidException(key);
+	}
+}

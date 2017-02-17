@@ -86,15 +86,17 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>NS_ASSETTOOLS_EXPORTS;WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>RAPIDJSON_HAS_STDSTRING;NS_ASSETTOOLS_EXPORTS;WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>D:\boost_1_63_0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\NullSpace Team\Documents\NS_Unreal_SDK\NS_Unreal_SDK\protobuff_defs;D:\Libraries\boost\boost_1_61_0;D:\protobuf-3.0.0\cmake\build\solution\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>-D_SCL_SECURE_NO_WARNINGS %(AdditionalOptions)</AdditionalOptions>
+      <DisableSpecificWarnings>4800</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>D:\boost_1_63_0\stage\lib\x86</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>D:\protobuf-3.0.0\cmake\build\solution\Debug;D:\Libraries\boost\boost_1_61_0\stage\win32\lib;</AdditionalLibraryDirectories>
+      <AdditionalDependencies>libprotobufd.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -104,13 +106,14 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>RAPIDJSON_HAS_STDSTRING;NS_ASSETTOOLS_EXPORTS;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>D:\boost_1_63_0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\protobuf-3.0.0\cmake\build\solution\include;D:\Libraries\boost\boost_1_61_0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>-D_SCL_SECURE_NO_WARNINGS %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>D:\Libraries\boost\boost_1_61_0\stage\x64\lib;</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>D:\protobuf-3.0.0\cmake\build\solution\Debug;D:\Libraries\boost\boost_1_61_0\stage\x64\lib;</AdditionalLibraryDirectories>
+      <AdditionalDependencies>libprotobufd.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -122,14 +125,15 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>NS_ASSETTOOLS_EXPORTS;WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>D:\boost_1_63_0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\NullSpace Team\Documents\NS_Unreal_SDK\NS_Unreal_SDK\protobuff_defs;D:\protobuf-3.0.0\cmake\build\solution\include;D:\boost_1_63_0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>D:\boost_1_63_0\stage\lib\x86</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>D:\protobuf-3.0.0\cmake\build\solution\Release;D:\boost_1_63_0\stage\lib\x86</AdditionalLibraryDirectories>
+      <AdditionalDependencies>libprotobuf.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -141,7 +145,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>RAPIDJSON_HAS_STDSTRING;NS_ASSETTOOLS_EXPORTS;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>D:\boost_1_63_0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\protobuf-3.0.0\cmake\build\solution\include;D:\boost_1_63_0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>-D_SCL_SECURE_NO_WARNINGS %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
@@ -149,27 +153,42 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>D:\Libraries\boost\boost_1_61_0\stage\x64\lib;</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>D:\protobuf-3.0.0\cmake\build\solution\Release;D:\Libraries\boost\boost_1_61_0\stage\x64\lib;</AdditionalLibraryDirectories>
+      <AdditionalDependencies>libprotobuf.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\..\NS_Unreal_SDK\NS_Unreal_SDK\protobuff_defs\HapticEffect.pb.h" />
     <ClInclude Include="AssetToolsLibrary.h" />
     <ClInclude Include="HapticAssetTools.h" />
     <ClInclude Include="HapticDirectoryTools.h" />
+    <ClInclude Include="HapticFileInfo.h" />
     <ClInclude Include="ijsonserializable.h" />
+    <ClInclude Include="JsonParsers.h" />
+    <ClInclude Include="MetaFile.h" />
+    <ClInclude Include="MetaResolver.h" />
+    <ClInclude Include="Node.h" />
     <ClInclude Include="Package.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="HapticsLoadingException.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\..\NS_Unreal_SDK\NS_Unreal_SDK\protobuff_defs\HapticEffect.pb.cc">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="AssetToolsLibrary.cpp" />
     <ClCompile Include="HapticAssetTools.cpp" />
     <ClCompile Include="HapticDirectoryTools.cpp" />
+    <ClCompile Include="HapticFileInfo.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="MetaFile.cpp" />
+    <ClCompile Include="MetaResolver.cpp" />
+    <ClCompile Include="Node.cpp" />
     <ClCompile Include="Package.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

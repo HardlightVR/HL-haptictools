@@ -9,8 +9,8 @@
 
 #include <stdio.h>
 #include <tchar.h>
-#include <boost\log\trivial.hpp>
-
+#include <vector>
+#include <memory>
 
 
 // TODO: reference additional headers your program requires here

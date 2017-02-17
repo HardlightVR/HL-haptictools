@@ -2,11 +2,51 @@
 #include <string>
 #include <vector>
 #include <unordered_map>
-#include "boost/filesystem.hpp"
+#include <boost\filesystem.hpp>
 #include "IJsonSerializable.h"
-#include "rapidjson\fwd.h"
+#include "rapidjson\document.h"
 #include <unordered_map>
 #include <boost\functional\hash\hash.hpp>
+#include "HapticsLoadingException.h"
+
+
+class JsonValueInvalidException : public std::runtime_error {
+public:
+	JsonValueInvalidException(const std::string& key) :
+		std::runtime_error(std::string("Key '" + key + "' has an invalid value or is not present").c_str()) {}
+};
+
+class HapticsRootDirectoryNotFound : public HapticsLoadingException {
+public:
+	HapticsRootDirectoryNotFound(std::string err) :
+		HapticsLoadingException(err) {}
+};
+
+template<class T>
+T parseKeyOrThrow(const rapidjson::Value& root, const char* key)
+{
+	rapidjson::Value::ConstMemberIterator itr = root.FindMember(key);
+	if (itr != root.MemberEnd()) {
+		return itr->value.Get<T>();
+	}
+	else {
+		throw JsonValueInvalidException(key);
+	}
+
+}
+
+void findKeyOrThrow(const rapidjson::Value& root, const char* key);
+template<class T>
+T parseKeyOrDefault(const rapidjson::Value& root, const char* key, T defaultVal) {
+	rapidjson::Value::ConstMemberIterator itr = root.FindMember(key);
+	if (itr != root.MemberEnd()) {
+		return itr->value.Get<T>();
+	}
+	else {
+		return defaultVal;
+	}
+}
+
 namespace std
 {
 	template<> struct hash<boost::filesystem::path>
