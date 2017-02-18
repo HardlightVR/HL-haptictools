@@ -175,6 +175,7 @@ void AssetToolsLibrary::CreateMetaFile(std::string fileName, std::string fileTyp
 
 }
 
+//deprecated
 void AssetToolsLibrary::CreateBinaryAssetFromPath(std::string filePath, std::string outPath)
 {
 	MetaResolver r(m_paths);
@@ -223,7 +224,7 @@ void AssetToolsLibrary::CreateBinaryAsset(std::string fileName, std::string file
 	}
 
 
-	auto res = result->ToBinary();
+	auto res = result->ToHDF();
 	std::cout << res.DebugString() << '\n';
 	std::string bytes;
 	res.SerializeToString(&bytes);

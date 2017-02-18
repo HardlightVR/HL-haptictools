@@ -3,6 +3,7 @@
 #include "Node.h"
 #include "HapticFileInfo.h"
 #include "HapticEffect.pb.h"
+#include <google/protobuf/map.h>
  template<class T>
  class DataTuple {
  public:
@@ -11,6 +12,8 @@
 	T Data;
 	std::string Key;
  };
+
+ NullSpaceHaptics::RootEffect_Type GetFileType(HapticFileType type);
 class MetaFile
 {
 public:
@@ -22,10 +25,11 @@ public:
 	void AddSequenceDefinition(std::string name, SequenceData data);
 	void AddPatternDefinition(std::string name, PatternData data);
 	void AddExperienceDefinition(std::string name, ExperienceData data);
-	NullSpaceHaptics::HapticFile ToBinary();
+//	NullSpaceHaptics::HapticFile ToBinary();
 	NullSpaceHaptics::HapticDescriptionFile ToHDF();
 
 private:
+
 	//void Traverse()
 	//NullSpaceHaptics::Pattern GetPattern(std::string name);
 	HapticFileInfo m_rootEffect;
@@ -33,8 +37,12 @@ private:
 	std::vector<DataTuple<PatternData>> m_patterns;
 	std::vector<DataTuple<ExperienceData>> m_experiences;
 
-	template<class T>
-	void serializeProto(NullSpaceHaptics::HapticDescriptionFile& hf, std::vector<DataTuple<T>>) const;
+	void serializeProto(const google::protobuf::Map<std::string, NullSpaceHaptics::SequenceDefinitions> definitions, std::vector<DataTuple<SequenceData>> data) const;
+	
+
+	template<class DefinitionType, class DataType>
+	void serializeProtoT(google::protobuf::Map<std::string, DefinitionType>& definitions, std::vector<DataTuple<DataType>>& data) const;
+	
 	template<class T>
 	void serialize(rapidjson::Value& val, std::vector<DataTuple<T>>, rapidjson::Document& d) const;
 
@@ -71,13 +79,35 @@ inline DataTuple<T>::~DataTuple()
 {
 }
 
-template<class T>
-inline void MetaFile::serializeProto(NullSpaceHaptics::HapticDescriptionFile & hf, std::vector<DataTuple<T>> data) const
-{
-	for (const auto& item : data) {
-		for (const auto& atom : item.Data) {
 
+inline void MetaFile::serializeProto(google::protobuf::Map<std::string, NullSpaceHaptics::SequenceDefinitions> definitions, std::vector<DataTuple<SequenceData>> data) const
+{
+	
+	//so, sequence_definitions is a map from string -> a sequence definition
+	for (const auto& dataTuple : data) {
+		//for each definition, we want to add a new map entry, which will be dataTuple.Data
+		NullSpaceHaptics::SequenceDefinitions sd;
+
+		for (const auto& sequenceData : dataTuple.Data) {
+			sequenceData.Serialize(sd);
 		}
+	//	definitions.insert(std::make_pair(dataTuple.Key, sd));
+	}
+
+}
+template<class DefinitionType, class DataType>
+inline void MetaFile::serializeProtoT(google::protobuf::Map<std::string, DefinitionType>& definitions, std::vector<DataTuple<DataType>>& data) const
+{
+
+	//so, sequence_definitions is a map from string -> a sequence definition
+	for (const auto& dataTuple : data) {
+		//for each definition, we want to add a new map entry, which will be dataTuple.Data
+		DefinitionType sd;
+
+		for (const auto& sequenceData : dataTuple.Data) {
+			sequenceData.Serialize(sd);
+		}
+		definitions.insert(google::protobuf::MapPair<std::string, DefinitionType>(dataTuple.Key, sd));
 	}
 
 }

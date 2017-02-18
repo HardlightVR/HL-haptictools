@@ -42,14 +42,14 @@ void SequenceNode::Serialize(NullSpaceHaptics::SequenceDefinitions & s) const
 	newEffect->set_effect(m_effect);
 }
 
-void SequenceNode::Serialize(NullSpaceHaptics::Sequence& s) const
-{
-	auto newEffect = s.mutable_effects()->Add();
-	newEffect->set_strength(m_strength);
-	newEffect->set_time(m_time);
-	newEffect->set_duration(m_duration);
-	newEffect->set_effect(m_effect);
-}
+//void SequenceNode::Serialize(NullSpaceHaptics::Sequence& s) const
+//{
+//	auto newEffect = s.mutable_effects()->Add();
+//	newEffect->set_strength(m_strength);
+//	newEffect->set_time(m_time);
+//	newEffect->set_duration(m_duration);
+//	newEffect->set_effect(m_effect);
+//}
 
 PatternNode::PatternNode(){}
 PatternNode::~PatternNode(){}
@@ -66,18 +66,18 @@ void PatternNode::Serialize(rapidjson::Value & val, rapidjson::Document & doc) c
 	val.AddMember("time", Value(m_time), alloc);
 }
 
-void PatternNode::Serialize(NullSpaceHaptics::Pattern & p) const
-{
-	auto newSeq = p.mutable_sequences()->Add();
-	//TODO: placeholder area for now
-	newSeq->set_area(0);
-	newSeq->set_strength(m_strength);
-	newSeq->set_time(m_time);
-	
-}
+//void PatternNode::Serialize(NullSpaceHaptics::Pattern & p) const
+//{
+//	auto newSeq = p.mutable_sequences()->Add();
+//	//TODO: placeholder area for now
+//	newSeq->set_area(0);
+//	newSeq->set_strength(m_strength);
+//	newSeq->set_time(m_time);
+//	
+//}
 
 
-void PatternNode::Serialize(NullSpaceHaptics::PatternDefinitions& p)
+void PatternNode::Serialize(NullSpaceHaptics::PatternDefinitions& p) const
 {
 	auto newSeq = p.mutable_pattern_nodes()->Add();
 	//todo: temporary before we convert string of area to actual number
@@ -106,12 +106,19 @@ void PatternNode::Deserialize(rapidjson::Value & doc)
 
 ExperienceNode::ExperienceNode(){}
 ExperienceNode::~ExperienceNode(){}
-void ExperienceNode::Serialize(NullSpaceHaptics::Experience & e) const
+void ExperienceNode::Serialize(NullSpaceHaptics::ExperienceDefinitions & d) const
 {
-	auto newPat = e.mutable_patterns()->Add();
-	newPat->set_strength(m_strength);
-	newPat->set_time(m_time);
+	auto newExp = d.mutable_experience_nodes()->Add();
+	newExp->set_pattern(m_pattern);
+	newExp->set_strength(m_strength);
+	newExp->set_time(m_time);
 }
+//void ExperienceNode::Serialize(NullSpaceHaptics::Experience & e) const
+//{
+//	auto newPat = e.mutable_patterns()->Add();
+//	newPat->set_strength(m_strength);
+//	newPat->set_time(m_time);
+//}
 void ExperienceNode::Serialize(rapidjson::Value & val, rapidjson::Document & doc) const
 {
 	assert(val.IsObject());
