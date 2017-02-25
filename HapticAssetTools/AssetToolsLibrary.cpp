@@ -117,7 +117,7 @@ std::vector<AssetToolsLibrary::OutputPackageInfo> AssetToolsLibrary::GetPackages
 	return output;
 }
 
-void AssetToolsLibrary::CreateMetaFileFromPath(std::string filePath) {
+void AssetToolsLibrary::CreateMetaFileFromPath(std::string filePath, std::string outPath) {
 	MetaResolver r(m_paths);
 
 	boost::filesystem::path path(filePath);
@@ -131,7 +131,7 @@ void AssetToolsLibrary::CreateMetaFileFromPath(std::string filePath) {
 		auto package = _packageMap[path.parent_path().parent_path()];
 		auto nameOnly = path.stem().string();
 		CreateMetaFile(package.Package + "." + nameOnly, 
-			extension.string().substr(1, extension.string().length()-1));
+			extension.string().substr(1, extension.string().length()-1), outPath);
 
 		
 	}
@@ -139,7 +139,7 @@ void AssetToolsLibrary::CreateMetaFileFromPath(std::string filePath) {
 		throw HapticsLoadingException("Couldn't find the package associated with " + filePath);
 	}
 }
-void AssetToolsLibrary::CreateMetaFile(std::string fileName, std::string fileType)
+void AssetToolsLibrary::CreateMetaFile(std::string fileName, std::string fileType, std::string outpath)
 {
 	using namespace rapidjson;
 	
@@ -172,6 +172,15 @@ void AssetToolsLibrary::CreateMetaFile(std::string fileName, std::string fileTyp
 	d.Accept(writer);
 	std::cout << buffer.GetString();
 
+	if (outpath != "") {
+		std::ofstream outfile(outpath, std::ofstream::binary);
+
+		if (!outfile.is_open()) {
+			std::cout << "Couldn't open the path " << outpath << " for writing\n";
+
+		}
+		outfile.write(buffer.GetString(), buffer.GetSize());
+	}
 
 }
 
@@ -228,13 +237,15 @@ void AssetToolsLibrary::CreateBinaryAsset(std::string fileName, std::string file
 	std::cout << res.DebugString() << '\n';
 	std::string bytes;
 	res.SerializeToString(&bytes);
-	std::ofstream outfile(path, std::ofstream::binary);
-	
-	if (!outfile.is_open()) {
-		std::cout << "Couldn't open the path " << path << " for writing\n";
+	if (path != "") {
+		std::ofstream outfile(path, std::ofstream::binary);
 
+		if (!outfile.is_open()) {
+			std::cout << "Couldn't open the path " << path << " for writing\n";
+
+		}
+		outfile.write(bytes.c_str(), res.ByteSize());
 	}
-	outfile.write(bytes.c_str(), res.ByteSize());
 }
 
 void AssetToolsLibrary::buildPackagePaths(HapticDirectoryTools::PackageNode node, std::string prefix)

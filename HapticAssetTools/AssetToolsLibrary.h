@@ -47,14 +47,14 @@ public:
 	};
 	AssetToolsLibrary();
 	~AssetToolsLibrary();
-	void AssetToolsLibrary::CreateMetaFileFromPath(std::string filePath);
+	void AssetToolsLibrary::CreateMetaFileFromPath(std::string filePath, std::string outPath);
 	int InitializeFromDirectory(const char* dir);
 	int Rescan();
 	int CheckIfPackage(const char* dir, PackageInfo& info, bool& isPackage);
 	char* GetError();
 	std::string SafeGetError();
 	std::vector<OutputPackageInfo> GetPackages();
-	void CreateMetaFile(std::string fileName, std::string fileType);
+	void CreateMetaFile(std::string fileName, std::string fileType, std::string outPath);
 	void CreateBinaryAssetFromPath(std::string filePath, std::string outPath);
 	void CreateBinaryAsset(std::string fileName, std::string fileType, std::string outPath);
 private:

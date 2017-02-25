@@ -105,22 +105,18 @@ int main(int argc, char* argv[])
 			}
 		}
 	}
-	else if (vm.count("pack-file")) {
-		if (!vm.count("file-type")) {
-			std::cout << "Please specify a file type: one of [sequence, pattern, experience]";
-			exit(1);
+	
+	
+	else if (vm.count("generate-asset")) {
+		std::string outpath = vm.count("out-file") > 0 ? vm["out-file"].as<std::string>() : "";
+		if (vm.count("json")) {
+			assetTool.CreateMetaFileFromPath(vm["generate-asset"].as<std::string>(), outpath);
 
 		}
+		else {
+			assetTool.CreateBinaryAssetFromPath(vm["generate-asset"].as<std::string>(), outpath);
+		}
 
-		assetTool.CreateMetaFile(vm["pack-file"].as<std::string>(), vm["file-type"].as<std::string>());
-	}
-	else if (vm.count("pack-file-path")) {
-	
-
-		assetTool.CreateMetaFileFromPath(vm["pack-file-path"].as<std::string>());
-	}
-	else if (vm.count("generate-asset")) {
-		assetTool.CreateBinaryAssetFromPath(vm["generate-asset"].as<std::string>(), vm["out-file"].as<std::string>());
 	}
 	
 
