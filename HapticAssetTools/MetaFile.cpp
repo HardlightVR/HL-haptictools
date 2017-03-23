@@ -38,9 +38,9 @@ void MetaFile::Serialize(rapidjson::Document & doc) const
 	doc.AddMember("root_effect", effect, alloc);
 	
 }
-NullSpaceHaptics::HapticDescriptionFile MetaFile::ToHDF()
+nsvr::detail::encoding::HapticDescriptionFile MetaFile::ToHDF()
 {
-	NullSpaceHaptics::HapticDescriptionFile h;
+	nsvr::detail::encoding::HapticDescriptionFile h;
 	serializeProtoT(*h.mutable_sequence_definitions(), m_sequences);
 	serializeProtoT(*h.mutable_pattern_definitions(), m_patterns);
 	serializeProtoT(*h.mutable_experience_definitions(), m_experiences);
@@ -65,55 +65,55 @@ void MetaFile::AddExperienceDefinition(std::string name, ExperienceData data)
 
 }
 
-//NullSpaceHaptics::HapticFile MetaFile::ToBinary()
+//nsvr::detail::encoding::HapticFile MetaFile::ToBinary()
 //{
-//	NullSpaceHaptics::HapticFile f;
+//	nsvr::detail::encoding::HapticFile f;
 //
 //	if (m_rootEffect.FileType == HapticFileType::Sequence) {
-//		auto sequence = GetData<NullSpaceHaptics::Sequence, SequenceData>(m_rootEffect.FullId, m_sequences);
+//		auto sequence = GetData<nsvr::detail::encoding::Sequence, SequenceData>(m_rootEffect.FullId, m_sequences);
 //		//defaults
 //		sequence.set_strength(1.0);
 //		sequence.set_area(0);
-//		f.set_type(NullSpaceHaptics::HapticFile_Type_SEQUENCE);
+//		f.set_type(nsvr::detail::encoding::HapticFile_Type_SEQUENCE);
 //		f.mutable_sequence()->CopyFrom(sequence);
 //		return f;
 //	}
 //	else if (m_rootEffect.FileType == HapticFileType::Pattern) {
-//		NullSpaceHaptics::HapticFile f;
+//		nsvr::detail::encoding::HapticFile f;
 //		auto actualData = Find<PatternData>(m_rootEffect.FullId, m_patterns);
-//		auto pattern = GetData<NullSpaceHaptics::Pattern, PatternData>(m_rootEffect.FullId, m_patterns);
+//		auto pattern = GetData<nsvr::detail::encoding::Pattern, PatternData>(m_rootEffect.FullId, m_patterns);
 //		pattern.set_strength(1.0);
 //
 //		for (const auto& p : actualData) {
 //			
-//			SerializeFromKey<NullSpaceHaptics::Sequence, SequenceData>(p.Sequence(), pattern.add_sequences(), m_sequences);
+//			SerializeFromKey<nsvr::detail::encoding::Sequence, SequenceData>(p.Sequence(), pattern.add_sequences(), m_sequences);
 //
 //		}
 //		std::cout << pattern.DebugString() << '\n';
 //		f.mutable_pattern()->CopyFrom(pattern);
 //
-//		f.set_type(NullSpaceHaptics::HapticFile_Type_PATTERN);
+//		f.set_type(nsvr::detail::encoding::HapticFile_Type_PATTERN);
 //		return f;
 //
 //	}
 //	
-//	return NullSpaceHaptics::HapticFile();
+//	return nsvr::detail::encoding::HapticFile();
 //}
 //
 
 
 
 
-NullSpaceHaptics::RootEffect_Type GetFileType(HapticFileType type)
+nsvr::detail::encoding::RootEffect_Type GetFileType(HapticFileType type)
 {
 	switch (type) {
 	case HapticFileType::Experience:
-		return NullSpaceHaptics::RootEffect_Type_EXPERIENCE;
+		return nsvr::detail::encoding::RootEffect_Type_EXPERIENCE;
 	case HapticFileType::Pattern:
-		return NullSpaceHaptics::RootEffect_Type_PATTERN;
+		return nsvr::detail::encoding::RootEffect_Type_PATTERN;
 	case HapticFileType::Sequence:
-		return NullSpaceHaptics::RootEffect_Type_SEQUENCE;
+		return nsvr::detail::encoding::RootEffect_Type_SEQUENCE;
 	default:
-		return NullSpaceHaptics::RootEffect_Type_UNKNOWN;
+		return nsvr::detail::encoding::RootEffect_Type_UNKNOWN;
 	}
 }

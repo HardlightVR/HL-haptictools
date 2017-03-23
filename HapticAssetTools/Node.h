@@ -13,8 +13,8 @@ public:
 	~SequenceNode();
 	void Serialize(rapidjson::Value& val, rapidjson::Document& doc) const;
 	void Deserialize(rapidjson::Value& doc);
-	void Serialize(NullSpaceHaptics::SequenceDefinitions& e) const;
-	//void Serialize(NullSpaceHaptics::Sequence& s) const;
+	void Serialize(nsvr::detail::encoding::SequenceDefinitions& e) const;
+	//void Serialize(nsvr::detail::encoding::Sequence& s) const;
 private:
 	float m_time;
 	std::string m_effect;
@@ -27,8 +27,8 @@ public:
 	PatternNode();
 	~PatternNode();
 	void Serialize(rapidjson::Value& val, rapidjson::Document& doc) const;
-//	void Serialize(NullSpaceHaptics::Pattern& p) const;
-	void Serialize(NullSpaceHaptics::PatternDefinitions& p) const;
+//	void Serialize(nsvr::detail::encoding::Pattern& p) const;
+	void Serialize(nsvr::detail::encoding::PatternDefinitions& p) const;
 	void Deserialize(rapidjson::Value& doc);
 	std::string Sequence() const { return m_sequence; }
 private:
@@ -42,8 +42,8 @@ class ExperienceNode : public INode {
 public:
 	ExperienceNode();
 	~ExperienceNode();
-	void Serialize(NullSpaceHaptics::ExperienceDefinitions& d) const;
-	//void Serialize(NullSpaceHaptics::Experience& e) const;
+	void Serialize(nsvr::detail::encoding::ExperienceDefinitions& d) const;
+	//void Serialize(nsvr::detail::encoding::Experience& e) const;
 	void Serialize(rapidjson::Value& val, rapidjson::Document& doc) const;
 	void Deserialize(rapidjson::Value& doc);
 	std::string Pattern() const { return m_pattern; }

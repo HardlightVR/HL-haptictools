@@ -4,6 +4,7 @@
 
 #include "rapidjson\document.h"
 #include <sstream>
+#include <string>
 #include <iomanip>
 #include "rapidjson\writer.h"
 #include "rapidjson\stringbuffer.h"
@@ -47,7 +48,7 @@ public:
 	};
 	AssetToolsLibrary();
 	~AssetToolsLibrary();
-	void AssetToolsLibrary::CreateMetaFileFromPath(std::string filePath, std::string outPath);
+	void AssetToolsLibrary::CreateJsonAsset(std::string filePath, std::string outPath);
 	int InitializeFromDirectory(const char* dir);
 	int Rescan();
 	int CheckIfPackage(const char* dir, PackageInfo& info, bool& isPackage);
@@ -55,7 +56,7 @@ public:
 	std::string SafeGetError();
 	std::vector<OutputPackageInfo> GetPackages();
 	void CreateMetaFile(std::string fileName, std::string fileType, std::string outPath);
-	void CreateBinaryAssetFromPath(std::string filePath, std::string outPath);
+	void CreateBinaryAsset(std::string filePath, std::string outPath);
 	void CreateBinaryAsset(std::string fileName, std::string fileType, std::string outPath);
 private:
 	std::unique_ptr<HapticDirectoryTools::HapticEnumerator> _fileEnumerator;

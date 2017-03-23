@@ -117,7 +117,7 @@ std::vector<AssetToolsLibrary::OutputPackageInfo> AssetToolsLibrary::GetPackages
 	return output;
 }
 
-void AssetToolsLibrary::CreateMetaFileFromPath(std::string filePath, std::string outPath) {
+void AssetToolsLibrary::CreateJsonAsset(std::string filePath, std::string outPath) {
 	MetaResolver r(m_paths);
 
 	boost::filesystem::path path(filePath);
@@ -185,7 +185,7 @@ void AssetToolsLibrary::CreateMetaFile(std::string fileName, std::string fileTyp
 }
 
 //deprecated
-void AssetToolsLibrary::CreateBinaryAssetFromPath(std::string filePath, std::string outPath)
+void AssetToolsLibrary::CreateBinaryAsset(std::string filePath, std::string outPath)
 {
 	MetaResolver r(m_paths);
 

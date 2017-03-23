@@ -80,7 +80,7 @@ int main(int argc, char* argv[])
 	AssetToolsLibrary assetTool;
 	
 	if (!assetTool.InitializeFromDirectory(vm["root-path"].as<std::string>().c_str())) {
-		std::cout << assetTool.SafeGetError() << '\n';
+		std::cout << "Error:  " << assetTool.SafeGetError() << '\n';
 		exit(1);
 	}
 
@@ -99,7 +99,6 @@ int main(int argc, char* argv[])
 			std::cout << buff.GetString();
 		}
 		else {
-
 			for (const auto& p : packages) {
 				std::cout << p.to_readable_string() << '\n';
 			}
@@ -109,12 +108,22 @@ int main(int argc, char* argv[])
 	
 	else if (vm.count("generate-asset")) {
 		std::string outpath = vm.count("out-file") > 0 ? vm["out-file"].as<std::string>() : "";
+		
 		if (vm.count("json")) {
-			assetTool.CreateMetaFileFromPath(vm["generate-asset"].as<std::string>(), outpath);
-
+			try {
+				assetTool.CreateJsonAsset(vm["generate-asset"].as<std::string>(), outpath);
+			}
+			catch (const HapticsLoadingException& e) {
+				std::cout << "Error: "<<e.what() << '\n';
+			}
 		}
 		else {
-			assetTool.CreateBinaryAssetFromPath(vm["generate-asset"].as<std::string>(), outpath);
+			try {
+				assetTool.CreateBinaryAsset(vm["generate-asset"].as<std::string>(), outpath);
+			}
+			catch (const HapticsLoadingException& e) {
+				std::cout << "Error: " << e.what() << '\n';
+			}
 		}
 
 	}

@@ -8,6 +8,8 @@
 #include "HapticDirectoryTools.h"
 #include "Node.h"
 #include "HapticFileInfo.h"
+
+#include "rapidjson/error/en.h"
 template<class T>
 class Parser {
 public:
@@ -52,7 +54,7 @@ inline std::vector<T> Parser<T>::Get(const HapticFileInfo& info)
 	path /= info.GetDirectory();
 	 path /= info.GetValidFileNames()[0];
 	if (!boost::filesystem::exists(path)) {
-		throw HapticsLoadingException("Couldn't find " + info.FullId + " in package" + info.FullyQualifiedPackage);
+		throw HapticsLoadingException("Couldn't find " + info.FullId + " in package " + info.FullyQualifiedPackage);
 	}
 	
 	return parseFromPath(path, info);
@@ -68,7 +70,9 @@ inline std::vector<T> Parser<T>::parseFromPath(const boost::filesystem::path & p
 	std::ifstream ifs(path.c_str());
 	IStreamWrapper isw(ifs);
 	Document d;
-	d.ParseStream(isw);
+	if (d.ParseStream<kParseTrailingCommasFlag|kParseCommentsFlag>(isw).HasParseError()) {
+		throw new HapticsLoadingException(GetParseError_En(d.GetParseError()));
+	}
 
 	//Make sure the filetype is actually what we are trying to parse
 	findKeyOrThrow(d, m_key.c_str());

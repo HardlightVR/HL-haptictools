@@ -33,7 +33,7 @@ void SequenceNode::Deserialize(rapidjson::Value& doc)
 	m_strength = parseKeyOrDefault<float>(doc, "strength", 1.0f);
 }
 
-void SequenceNode::Serialize(NullSpaceHaptics::SequenceDefinitions & s) const
+void SequenceNode::Serialize(nsvr::detail::encoding::SequenceDefinitions & s) const
 {
 	auto newEffect = s.mutable_effects()->Add();
 	newEffect->set_strength(m_strength);
@@ -42,7 +42,7 @@ void SequenceNode::Serialize(NullSpaceHaptics::SequenceDefinitions & s) const
 	newEffect->set_effect(m_effect);
 }
 
-//void SequenceNode::Serialize(NullSpaceHaptics::Sequence& s) const
+//void SequenceNode::Serialize(nsvr::detail::encoding::Sequence& s) const
 //{
 //	auto newEffect = s.mutable_effects()->Add();
 //	newEffect->set_strength(m_strength);
@@ -66,7 +66,7 @@ void PatternNode::Serialize(rapidjson::Value & val, rapidjson::Document & doc) c
 	val.AddMember("time", Value(m_time), alloc);
 }
 
-//void PatternNode::Serialize(NullSpaceHaptics::Pattern & p) const
+//void PatternNode::Serialize(nsvr::detail::encoding::Pattern & p) const
 //{
 //	auto newSeq = p.mutable_sequences()->Add();
 //	//TODO: placeholder area for now
@@ -77,7 +77,7 @@ void PatternNode::Serialize(rapidjson::Value & val, rapidjson::Document & doc) c
 //}
 
 
-void PatternNode::Serialize(NullSpaceHaptics::PatternDefinitions& p) const
+void PatternNode::Serialize(nsvr::detail::encoding::PatternDefinitions& p) const
 {
 	auto newSeq = p.mutable_pattern_nodes()->Add();
 	//todo: temporary before we convert string of area to actual number
@@ -106,14 +106,14 @@ void PatternNode::Deserialize(rapidjson::Value & doc)
 
 ExperienceNode::ExperienceNode(){}
 ExperienceNode::~ExperienceNode(){}
-void ExperienceNode::Serialize(NullSpaceHaptics::ExperienceDefinitions & d) const
+void ExperienceNode::Serialize(nsvr::detail::encoding::ExperienceDefinitions & d) const
 {
 	auto newExp = d.mutable_experience_nodes()->Add();
 	newExp->set_pattern(m_pattern);
 	newExp->set_strength(m_strength);
 	newExp->set_time(m_time);
 }
-//void ExperienceNode::Serialize(NullSpaceHaptics::Experience & e) const
+//void ExperienceNode::Serialize(nsvr::detail::encoding::Experience & e) const
 //{
 //	auto newPat = e.mutable_patterns()->Add();
 //	newPat->set_strength(m_strength);

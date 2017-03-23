@@ -13,7 +13,7 @@
 	std::string Key;
  };
 
- NullSpaceHaptics::RootEffect_Type GetFileType(HapticFileType type);
+ nsvr::detail::encoding::RootEffect_Type GetFileType(HapticFileType type);
 class MetaFile
 {
 public:
@@ -25,19 +25,19 @@ public:
 	void AddSequenceDefinition(std::string name, SequenceData data);
 	void AddPatternDefinition(std::string name, PatternData data);
 	void AddExperienceDefinition(std::string name, ExperienceData data);
-//	NullSpaceHaptics::HapticFile ToBinary();
-	NullSpaceHaptics::HapticDescriptionFile ToHDF();
+//	nsvr::detail::encoding::HapticFile ToBinary();
+	nsvr::detail::encoding::HapticDescriptionFile ToHDF();
 
 private:
 
 	//void Traverse()
-	//NullSpaceHaptics::Pattern GetPattern(std::string name);
+	//nsvr::detail::encoding::Pattern GetPattern(std::string name);
 	HapticFileInfo m_rootEffect;
 	std::vector<DataTuple<SequenceData>> m_sequences;
 	std::vector<DataTuple<PatternData>> m_patterns;
 	std::vector<DataTuple<ExperienceData>> m_experiences;
 
-	void serializeProto(const google::protobuf::Map<std::string, NullSpaceHaptics::SequenceDefinitions> definitions, std::vector<DataTuple<SequenceData>> data) const;
+	void serializeProto(const google::protobuf::Map<std::string, nsvr::detail::encoding::SequenceDefinitions> definitions, std::vector<DataTuple<SequenceData>> data) const;
 	
 
 	template<class DefinitionType, class DataType>
@@ -80,13 +80,13 @@ inline DataTuple<T>::~DataTuple()
 }
 
 
-inline void MetaFile::serializeProto(google::protobuf::Map<std::string, NullSpaceHaptics::SequenceDefinitions> definitions, std::vector<DataTuple<SequenceData>> data) const
+inline void MetaFile::serializeProto(google::protobuf::Map<std::string, nsvr::detail::encoding::SequenceDefinitions> definitions, std::vector<DataTuple<SequenceData>> data) const
 {
 	
 	//so, sequence_definitions is a map from string -> a sequence definition
 	for (const auto& dataTuple : data) {
 		//for each definition, we want to add a new map entry, which will be dataTuple.Data
-		NullSpaceHaptics::SequenceDefinitions sd;
+		nsvr::detail::encoding::SequenceDefinitions sd;
 
 		for (const auto& sequenceData : dataTuple.Data) {
 			sequenceData.Serialize(sd);
