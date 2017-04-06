@@ -59,6 +59,10 @@ void HapticConfig::Deserialize(const rapidjson::Value& root)
 {
 
 	this->Package = parseKeyOrThrow<const char*>(root, "package");
+
+	//normalize the package name to lowercase
+	std::transform(this->Package.begin(), this->Package.end(), this->Package.begin(), ::tolower);
+
 	this->Studio = parseKeyOrThrow<const char*>(root, "studio");
 	this->Version = parseKeyOrDefault<const char*>(root, "version", "1.0");
 }

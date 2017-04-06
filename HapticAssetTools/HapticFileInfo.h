@@ -21,9 +21,10 @@ class HapticFileInfo
 public:
 	HapticFileInfo(HapticFileType ftype, std::string fullId);
 	virtual ~HapticFileInfo();
+	const std::string FullId;
+
 	const std::string FullyQualifiedPackage;
 	const std::string Name;
-	const std::string FullId;
 	const HapticFileType FileType;
 	virtual std::string GetDirectory() const
 	{
@@ -41,6 +42,7 @@ public:
 private:
 	static std::string getPackage(std::string thing);
 	static std::string getName(std::string thing);
+	static std::string normalizeFullId(std::string thing);
 protected:
 	static const std::string _packageSeparator;
 

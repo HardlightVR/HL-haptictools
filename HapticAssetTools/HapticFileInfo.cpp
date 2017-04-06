@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "HapticFileInfo.h"
-
-
+#include <boost/algorithm/string/case_conv.hpp>
+#include <locale>
 std::vector<std::string> Glue(std::string firstPart, std::string separator, const std::vector<std::string>& lastParts) 
 {
 	std::vector<std::string> results;
@@ -12,17 +12,26 @@ std::vector<std::string> Glue(std::string firstPart, std::string separator, cons
 	return results;
 }
 
-
+std::string HapticFileInfo::normalizeFullId(std::string id) {
+	//std::locale::global(std::locale("en_US.utf8"));
+	//auto& f = std::use_facet<std::ctype<wchar_t>>(std::locale());
+//	f.tolower(&id[0], &id[0] + id.size());
+	boost::algorithm::to_lower(id);
+	return id;
+}
+//Note: transforms package name to lower case
 const std::string HapticFileInfo::_packageSeparator = ".";
 std::string HapticFileInfo::getPackage(std::string thing)
 {
 	std::vector<std::string> parts;
+	
 	boost::split(parts, thing, boost::is_any_of(_packageSeparator));
 	if (parts.size() <= 1) {
 		throw InvalidPackageNameException(thing);
 	}
 	auto range = boost::make_iterator_range(parts.begin(), parts.end() - 1);
-	return boost::join(range, _packageSeparator);
+	return  boost::join(range, _packageSeparator);
+
 }
 
 std::string HapticFileInfo::getName(std::string thing)
@@ -89,9 +98,9 @@ std::string ExperienceFileInfo::GetDirectory() const
 }
 
 HapticFileInfo::HapticFileInfo(HapticFileType ftype, std::string fullId):
-	FullyQualifiedPackage(getPackage(fullId)),
-	Name(getName(fullId)), 
-	FullId(fullId), 
+	FullId(normalizeFullId(fullId)),
+	FullyQualifiedPackage(getPackage(FullId)), //<-- using normalized FullId 
+	Name(getName(FullId)),  //<-- using normalized FullId
 	FileType(ftype)
 {
 

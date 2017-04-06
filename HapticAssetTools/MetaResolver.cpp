@@ -50,6 +50,37 @@ MetaFile MetaResolver::Resolve(const PatternFileInfo & info)
 
 }
 
+MetaFile MetaResolver::Resolve(const ExperienceFileInfo& info) {
+	auto expData = m_expParser.Get(info);
+	MetaFile m(info);
+
+	m.AddExperienceDefinition(info.FullId, expData);
+	std::vector<std::string> dependencies;
+
+
+	for (const auto& expNode : expData) {
+		if (std::find(dependencies.begin(), dependencies.end(), expNode.Pattern()) == dependencies.end()) {
+			dependencies.push_back(expNode.Pattern());
+		}
+	}
+	std::vector<std::string> seqDependencies;
+
+	for (const auto& pat : dependencies) {
+		auto patData = m_patParser.Get(PatternFileInfo(pat));
+		m.AddPatternDefinition(pat, patData);
+		for (const auto& seqNode : patData) {
+			if (std::find(seqDependencies.begin(), seqDependencies.end(), seqNode.Sequence()) == seqDependencies.end()) {
+				seqDependencies.push_back(seqNode.Sequence());
+			}
+		}
+	}
+	for (const auto& seq : seqDependencies) {
+		m.AddSequenceDefinition(seq, m_seqParser.Get(SequenceFileInfo(seq)));
+	}
+
+	return m;
+}
+
 
 MetaFile MetaResolver::Resolve(std::string p)
 {

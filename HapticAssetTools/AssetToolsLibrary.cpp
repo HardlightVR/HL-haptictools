@@ -153,7 +153,7 @@ void AssetToolsLibrary::CreateMetaFile(std::string fileName, std::string fileTyp
 		result = std::make_unique<MetaFile>(r.Resolve(PatternFileInfo(fileName)));
 		break;
 	case HapticFileType::Experience:
-		result = std::make_unique<MetaFile>(r.Resolve(SequenceFileInfo(fileName)));
+		result = std::make_unique<MetaFile>(r.Resolve(ExperienceFileInfo(fileName)));
 		break;
 	default:
 		std::cout << "Unknown file type\n";
@@ -225,7 +225,7 @@ void AssetToolsLibrary::CreateBinaryAsset(std::string fileName, std::string file
 		result = std::make_unique<MetaFile>(r.Resolve(PatternFileInfo(fileName)));
 		break;
 	case HapticFileType::Experience:
-		result = std::make_unique<MetaFile>(r.Resolve(SequenceFileInfo(fileName)));
+		result = std::make_unique<MetaFile>(r.Resolve(ExperienceFileInfo(fileName)));
 		break;
 	default:
 		std::cout << "Unknown file type\n";
