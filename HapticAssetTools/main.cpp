@@ -9,26 +9,6 @@
 #include "AssetToolsLibrary.h"
 #include <iostream>
 
-class ErrorString {
-public:
-	ErrorString(NSAT_Context_t* context):_ptr(NSAT_GetError(context)), _error(_ptr) {
-
-	}
-	~ErrorString() {
-		NSAT_FreeError(_ptr);
-	}
-	std::string What() const {
-		return _error;
-	}
-	friend std::ostream& operator<<(std::ostream& stream, const ErrorString& e) {
-		stream << e.What();
-		return stream;
-	}
-private:
-	char* _ptr = nullptr;
-	std::string _error;
-};
-
 
 int main(int argc, char* argv[])
 {
@@ -39,12 +19,8 @@ int main(int argc, char* argv[])
 		("root-path", po::value<std::string>()->required(), "set root haptics directory")
 		("list-packages", "list out the haptic packages present")
 		("json", "encode output in json format")
-		("pack-file", po::value<std::string>(), "specify effect to pack")
-		("pack-file-path", po::value<std::string>(), "specify effect to pack")
 		("generate-asset", po::value<std::string>(), "specify effect to generate binary asset")
 		("out-file", po::value<std::string>(), "specify out path of binary asset")
-
-		("file-type", po::value<std::string>(), "specify effect type")
 	;
 	
 	po::variables_map vm;

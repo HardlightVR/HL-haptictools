@@ -71,7 +71,7 @@ inline std::vector<T> Parser<T>::parseFromPath(const boost::filesystem::path & p
 	IStreamWrapper isw(ifs);
 	Document d;
 	if (d.ParseStream<kParseTrailingCommasFlag|kParseCommentsFlag>(isw).HasParseError()) {
-		throw new HapticsLoadingException(GetParseError_En(d.GetParseError()));
+		throw  HapticsLoadingException(GetParseError_En(d.GetParseError()));
 	}
 
 	//Make sure the filetype is actually what we are trying to parse
