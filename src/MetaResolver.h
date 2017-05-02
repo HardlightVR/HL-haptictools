@@ -15,7 +15,6 @@ public:
 	MetaFile Resolve(const PatternFileInfo& info);
 	MetaFile Resolve(const ExperienceFileInfo& info);
 
-	MetaFile Resolve(std::string path);
 
 
 private:

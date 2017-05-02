@@ -82,17 +82,4 @@ MetaFile MetaResolver::Resolve(const ExperienceFileInfo& info) {
 }
 
 
-MetaFile MetaResolver::Resolve(std::string p)
-{
-	//first, determine what type we are dealing with
-	boost::filesystem::path path(p);
-	if (!path.has_extension()) {
-		throw HapticsLoadingException("Path does not have an extension");
-	}
-
-	auto extension = path.extension();
-	if (extension == ".sequence") {
-		
-	}
-}
 

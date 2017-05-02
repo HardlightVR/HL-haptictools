@@ -132,6 +132,6 @@ void ExperienceNode::Deserialize(rapidjson::Value & doc)
 {
 	assert(doc.IsObject());
 	m_time = parseKeyOrThrow<float>(doc, "time");
-	m_strength = parseKeyOrDefault(doc, "strength", 1.0);
+	m_strength = parseKeyOrDefault(doc, "strength", 1.0f);
 	m_pattern = parseKeyOrThrow<std::string>(doc, "pattern");
 }
