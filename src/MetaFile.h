@@ -26,7 +26,7 @@ public:
 	void AddPatternDefinition(std::string name, PatternData data);
 	void AddExperienceDefinition(std::string name, ExperienceData data);
 //	nsvr::detail::encoding::HapticFile ToBinary();
-	nsvr::detail::encoding::HapticDescriptionFile ToHDF();
+//	nsvr::detail::encoding::HapticDescriptionFile ToHDF();
 
 private:
 
@@ -80,21 +80,21 @@ inline DataTuple<T>::~DataTuple()
 }
 
 
-inline void MetaFile::serializeProto(google::protobuf::Map<std::string, nsvr::detail::encoding::SequenceDefinitions> definitions, std::vector<DataTuple<SequenceData>> data) const
-{
-	
-	//so, sequence_definitions is a map from string -> a sequence definition
-	for (const auto& dataTuple : data) {
-		//for each definition, we want to add a new map entry, which will be dataTuple.Data
-		nsvr::detail::encoding::SequenceDefinitions sd;
-
-		for (const auto& sequenceData : dataTuple.Data) {
-			sequenceData.Serialize(sd);
-		}
-	//	definitions.insert(std::make_pair(dataTuple.Key, sd));
-	}
-
-}
+//inline void MetaFile::serializeProto(google::protobuf::Map<std::string, nsvr::detail::encoding::SequenceDefinitions> definitions, std::vector<DataTuple<SequenceData>> data) const
+//{
+//	
+//	//so, sequence_definitions is a map from string -> a sequence definition
+//	for (const auto& dataTuple : data) {
+//		//for each definition, we want to add a new map entry, which will be dataTuple.Data
+//		nsvr::detail::encoding::SequenceDefinitions sd;
+//
+//		for (const auto& sequenceData : dataTuple.Data) {
+//			sequenceData.Serialize(sd);
+//		}
+//	//	definitions.insert(std::make_pair(dataTuple.Key, sd));
+//	}
+//
+//}
 template<class DefinitionType, class DataType>
 inline void MetaFile::serializeProtoT(google::protobuf::Map<std::string, DefinitionType>& definitions, std::vector<DataTuple<DataType>>& data) const
 {

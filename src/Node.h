@@ -13,7 +13,7 @@ public:
 	~SequenceNode();
 	void Serialize(rapidjson::Value& val, rapidjson::Document& doc) const;
 	void Deserialize(rapidjson::Value& doc);
-	void Serialize(nsvr::detail::encoding::SequenceDefinitions& e) const;
+	//void Serialize(nsvr::detail::encoding::SequenceDefinitions& e) const;
 	//void Serialize(nsvr::detail::encoding::Sequence& s) const;
 private:
 	float m_time;

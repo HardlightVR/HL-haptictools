@@ -33,14 +33,14 @@ void SequenceNode::Deserialize(rapidjson::Value& doc)
 	m_strength = parseKeyOrDefault<float>(doc, "strength", 1.0f);
 }
 
-void SequenceNode::Serialize(nsvr::detail::encoding::SequenceDefinitions & s) const
-{
-	auto newEffect = s.mutable_effects()->Add();
-	newEffect->set_strength(m_strength);
-	newEffect->set_time(m_time);
-	newEffect->set_duration(m_duration);
-	newEffect->set_effect(m_effect);
-}
+//void SequenceNode::Serialize(nsvr::detail::encoding::SequenceDefinitions & s) const
+//{
+//	auto newEffect = s.mutable_effects()->Add();
+//	newEffect->set_strength(m_strength);
+//	newEffect->set_time(m_time);
+//	newEffect->set_duration(m_duration);
+//	newEffect->set_effect(m_effect);
+//}
 
 //void SequenceNode::Serialize(nsvr::detail::encoding::Sequence& s) const
 //{
@@ -77,19 +77,19 @@ void PatternNode::Serialize(rapidjson::Value & val, rapidjson::Document & doc) c
 //}
 
 
-void PatternNode::Serialize(nsvr::detail::encoding::PatternDefinitions& p) const
-{
-	auto newSeq = p.mutable_pattern_nodes()->Add();
-	//todo: temporary before we convert string of area to actual number
-	newSeq->set_area(0);
-	newSeq->set_sequence(m_sequence);
-	newSeq->set_strength(m_strength);
-	newSeq->set_time(m_time);
-	
-
-	
-
-}
+//void PatternNode::Serialize(nsvr::detail::encoding::PatternDefinitions& p) const
+//{
+//	auto newSeq = p.mutable_pattern_nodes()->Add();
+//	//todo: temporary before we convert string of area to actual number
+//	newSeq->set_area(0);
+//	newSeq->set_sequence(m_sequence);
+//	newSeq->set_strength(m_strength);
+//	newSeq->set_time(m_time);
+//	
+//
+//	
+//
+//}
 
 void PatternNode::Deserialize(rapidjson::Value & doc)
 {
@@ -106,13 +106,13 @@ void PatternNode::Deserialize(rapidjson::Value & doc)
 
 ExperienceNode::ExperienceNode(){}
 ExperienceNode::~ExperienceNode(){}
-void ExperienceNode::Serialize(nsvr::detail::encoding::ExperienceDefinitions & d) const
-{
-	auto newExp = d.mutable_experience_nodes()->Add();
-	newExp->set_pattern(m_pattern);
-	newExp->set_strength(m_strength);
-	newExp->set_time(m_time);
-}
+//void ExperienceNode::Serialize(nsvr::detail::encoding::ExperienceDefinitions & d) const
+//{
+//	auto newExp = d.mutable_experience_nodes()->Add();
+//	newExp->set_pattern(m_pattern);
+//	newExp->set_strength(m_strength);
+//	newExp->set_time(m_time);
+//}
 //void ExperienceNode::Serialize(nsvr::detail::encoding::Experience & e) const
 //{
 //	auto newPat = e.mutable_patterns()->Add();

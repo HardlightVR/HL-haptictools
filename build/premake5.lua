@@ -39,8 +39,7 @@ project "AssetTool"
 		"../src/*.cpp",
 		"../src/*.h",
 		"../src/*.hpp",
-		"../src/rapidjson/**.h",
-		path.join(protobuf_def_incl_dir, "HapticEffect.pb.cc")
+		"../src/rapidjson/**.h"
 
 		
 	}

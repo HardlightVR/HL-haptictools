@@ -70,6 +70,7 @@ namespace HapticDirectoryTools {
 		std::string Namespace;
 		std::string Studio;
 		boost::filesystem::path Directory;
+		std::string Description;
 
 	};
 
@@ -91,6 +92,7 @@ namespace HapticDirectoryTools {
 		std::string Version;
 		std::string Studio;
 		std::string Package;
+		std::string Description;
 		virtual void Serialize(const rapidjson::Value& root);
 		virtual void Deserialize(const rapidjson::Value& root);
 	};

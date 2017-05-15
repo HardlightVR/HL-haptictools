@@ -23,6 +23,7 @@ PackageNode::PackageNode(HapticFileNameList data)
 {
 	this->Data = data;
 	this->Namespace = data.Namespace;
+
 }
 
 PackageNode::~PackageNode()
@@ -31,12 +32,12 @@ PackageNode::~PackageNode()
 
 
 HapticEnumerator::HapticEnumerator(const std::string& path) :
-	_validExtensions{ 
-		".pattern", 
-		".sequence", 
-		".experience"
-	},
-	_basePath(path)
+	_validExtensions{
+	".pattern",
+	".sequence",
+	".experience"
+},
+_basePath(path)
 {
 }
 
@@ -49,7 +50,7 @@ HapticConfig::HapticConfig()
 }
 
 HapticConfig::~HapticConfig()
-{	
+{
 }
 
 
@@ -65,11 +66,12 @@ void HapticConfig::Deserialize(const rapidjson::Value& root)
 
 	this->Studio = parseKeyOrThrow<const char*>(root, "studio");
 	this->Version = parseKeyOrDefault<const char*>(root, "version", "1.0");
+	this->Description = parseKeyOrDefault<const char*>(root, "description", "");
 }
 
 void HapticConfig::Serialize(const rapidjson::Value& root)
 {
-	
+
 }
 
 
@@ -86,10 +88,10 @@ PackageNode HapticEnumerator::GeneratePackageTree(const std::vector<HapticFileNa
 		insert(root, list);
 	}
 	return root;
-	
+
 }
 
- std::vector<boost::filesystem::path> HapticEnumerator::GetDirectories(const std::string& path)
+std::vector<boost::filesystem::path> HapticEnumerator::GetDirectories(const std::string& path)
 {
 	std::vector<boost::filesystem::path> dirs;
 	if (is_directory(path)) {
@@ -105,35 +107,35 @@ PackageNode HapticEnumerator::GeneratePackageTree(const std::vector<HapticFileNa
 	else {
 		throw HapticsRootDirectoryNotFound("The root directory " + path + " was not found");
 	}
-	
+
 }
 
 
- std::unordered_map<boost::filesystem::path, HapticConfig> HapticDirectoryTools::GetPackageMap(const std::vector<HapticEnumerator::package>& packages)
- {
-	 std::unordered_map<path, HapticConfig> map;
-	 for (const auto& package : packages) {
-		 map[std::get<0>(package)] = std::get<1>(package);
-	 }
-	 return map;
- }
+std::unordered_map<boost::filesystem::path, HapticConfig> HapticDirectoryTools::GetPackageMap(const std::vector<HapticEnumerator::package>& packages)
+{
+	std::unordered_map<path, HapticConfig> map;
+	for (const auto& package : packages) {
+		map[std::get<0>(package)] = std::get<1>(package);
+	}
+	return map;
+}
 
- PackageNode HapticDirectoryTools::GetAllPackages(const HapticEnumerator& enumerator) {
-	 return enumerator.GeneratePackageTree(enumerator.GetAllFiles(enumerator.EnumeratePackages()));
- }
+PackageNode HapticDirectoryTools::GetAllPackages(const HapticEnumerator& enumerator) {
+	return enumerator.GeneratePackageTree(enumerator.GetAllFiles(enumerator.EnumeratePackages()));
+}
 
 
 const char* HapticEnumerator::DirectoryNotFoundString = "The given root haptics directory was not found";
 
 
- rapidjson::Document readJsonFromStream(const boost::filesystem::path& path)
- {
-	 rapidjson::Document document;
-	 std::ifstream configStream(path.string());
-	 rapidjson::IStreamWrapper isw(configStream);
-	 document.ParseStream(isw);
-	 return document;
- }
+rapidjson::Document readJsonFromStream(const boost::filesystem::path& path)
+{
+	rapidjson::Document document;
+	std::ifstream configStream(path.string());
+	rapidjson::IStreamWrapper isw(configStream);
+	document.ParseStream(isw);
+	return document;
+}
 std::vector<std::tuple<path, HapticConfig>> HapticEnumerator::EnumeratePackages() const
 {
 	auto potentialPackages = GetDirectories(_basePath);
@@ -157,9 +159,9 @@ std::vector<std::tuple<path, HapticConfig>> HapticEnumerator::EnumeratePackages(
 				}
 			}
 			else {
-				std::cout << "Malformed config\n";
+				std::cout << "Malformed config file at path: ["<< configPath << "]\n";
 			}
-			
+
 		}
 	}
 
@@ -168,11 +170,11 @@ std::vector<std::tuple<path, HapticConfig>> HapticEnumerator::EnumeratePackages(
 }
 
 boost::filesystem::path PathCombine(const path& p1, const std::string& p2)
- {
+{
 	path result = p1;
 	result /= path(p2);
 	return result;
- }
+}
 
 HapticFileNameList HapticEnumerator::GetFilesInPackage(package configTuple)  const
 {
@@ -188,6 +190,7 @@ HapticFileNameList HapticEnumerator::GetFilesInPackage(package configTuple)  con
 	fileList.Namespace = config.Package;
 	fileList.Studio = config.Studio;
 	fileList.Directory = directory;
+	fileList.Description = config.Description;
 
 	return fileList;
 
@@ -230,7 +233,7 @@ std::vector<std::string> HapticEnumerator::GetFileNames(path path) const {
 			names.push_back(itr->path().filename().string());
 		}
 	}
-	
+
 
 	return names;
 
@@ -241,28 +244,30 @@ std::vector<std::string> GetNamespaceComponents(const std::string& nameSpace)
 	boost::split(result, nameSpace, boost::algorithm::is_any_of("."));
 	return result;
 }
-void HapticEnumerator::insert(PackageNode& node,  HapticFileNameList& list) const
+void HapticEnumerator::insert(PackageNode& node, HapticFileNameList& list) const
 {
 	auto components = GetNamespaceComponents(list.Namespace);
 	std::string topLevel = components[0];
 	if (components.size() == 1)
 	{
 		node.Children[topLevel] = PackageNode(list);
-			
-	} else
+
+	}
+	else
 	{
-		list.Namespace = list.Namespace.substr(list.Namespace.find_first_of(".")+1);
+		list.Namespace = list.Namespace.substr(list.Namespace.find_first_of(".") + 1);
 
 		if (node.Children.find(topLevel) != node.Children.end())
 		{
 			insert(node.Children[topLevel], list);
-		} else
+		}
+		else
 		{
 			node.Children[topLevel] = PackageNode();
 			insert(node.Children[topLevel], list);
 		}
 	}
-	
+
 }
 
 void findKeyOrThrow(const rapidjson::Value & root, const char * key)

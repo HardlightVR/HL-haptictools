@@ -2,7 +2,7 @@
 #include "HapticFileInfo.h"
 #include <boost/algorithm/string/case_conv.hpp>
 #include <locale>
-std::vector<std::string> Glue(std::string firstPart, std::string separator, const std::vector<std::string>& lastParts) 
+std::vector<std::string> Glue(std::string firstPart, std::string separator, const std::vector<std::string>& lastParts)
 {
 	std::vector<std::string> results;
 	for (auto part : lastParts)
@@ -15,7 +15,7 @@ std::vector<std::string> Glue(std::string firstPart, std::string separator, cons
 std::string HapticFileInfo::normalizeFullId(std::string id) {
 	//std::locale::global(std::locale("en_US.utf8"));
 	//auto& f = std::use_facet<std::ctype<wchar_t>>(std::locale());
-//	f.tolower(&id[0], &id[0] + id.size());
+	//	f.tolower(&id[0], &id[0] + id.size());
 	boost::algorithm::to_lower(id);
 	return id;
 }
@@ -24,7 +24,7 @@ const std::string HapticFileInfo::_packageSeparator = ".";
 std::string HapticFileInfo::getPackage(std::string thing)
 {
 	std::vector<std::string> parts;
-	
+
 	boost::split(parts, thing, boost::is_any_of(_packageSeparator));
 	if (parts.size() <= 1) {
 		throw InvalidPackageNameException(thing);
@@ -41,7 +41,7 @@ std::string HapticFileInfo::getName(std::string thing)
 	return parts[parts.size() - 1];
 }
 
-SequenceFileInfo::SequenceFileInfo(std::string fullId):HapticFileInfo(HapticFileType::Sequence, fullId)
+SequenceFileInfo::SequenceFileInfo(std::string fullId) :HapticFileInfo(HapticFileType::Sequence, fullId)
 {
 }
 
@@ -52,7 +52,7 @@ SequenceFileInfo::~SequenceFileInfo()
 
 std::vector<std::string> SequenceFileInfo::GetValidFileNames() const
 {
-	return Glue(Name, ".", {"sequence"});
+	return Glue(Name, ".", { "sequence" });
 }
 
 std::string SequenceFileInfo::GetDirectory() const
@@ -60,7 +60,7 @@ std::string SequenceFileInfo::GetDirectory() const
 	return "sequences";
 }
 
-PatternFileInfo::PatternFileInfo(std::string fullId):HapticFileInfo(HapticFileType::Pattern, fullId)
+PatternFileInfo::PatternFileInfo(std::string fullId) :HapticFileInfo(HapticFileType::Pattern, fullId)
 {
 }
 
@@ -78,7 +78,7 @@ std::string PatternFileInfo::GetDirectory() const
 	return "patterns";
 }
 
-ExperienceFileInfo::ExperienceFileInfo(std::string fullId):HapticFileInfo(HapticFileType::Experience, fullId)
+ExperienceFileInfo::ExperienceFileInfo(std::string fullId) :HapticFileInfo(HapticFileType::Experience, fullId)
 {
 
 }
@@ -89,7 +89,7 @@ ExperienceFileInfo::~ExperienceFileInfo()
 
 std::vector<std::string> ExperienceFileInfo::GetValidFileNames() const
 {
-	return Glue(Name, ".", {"experience" });
+	return Glue(Name, ".", { "experience" });
 }
 
 std::string ExperienceFileInfo::GetDirectory() const
@@ -97,7 +97,7 @@ std::string ExperienceFileInfo::GetDirectory() const
 	return "experiences";
 }
 
-HapticFileInfo::HapticFileInfo(HapticFileType ftype, std::string fullId):
+HapticFileInfo::HapticFileInfo(HapticFileType ftype, std::string fullId) :
 	FullId(normalizeFullId(fullId)),
 	FullyQualifiedPackage(getPackage(FullId)), //<-- using normalized FullId 
 	Name(getName(FullId)),  //<-- using normalized FullId

@@ -16,9 +16,9 @@
 #include <boost\filesystem.hpp>
 AssetToolsLibrary::AssetToolsLibrary()
 {
-	
 
-	
+
+
 }
 
 
@@ -63,8 +63,8 @@ int AssetToolsLibrary::CheckIfPackage(const char * dir, PackageInfo & info, bool
 {
 	if (_packageMap.find(boost::filesystem::path(dir)) != _packageMap.end()) {
 		std::fill(info.Namespace, info.Namespace + 128, 0);
-		std::fill(info.Studio, info.Studio +128, 0);
-		std::fill(info.Version, info.Version+128, 0);
+		std::fill(info.Studio, info.Studio + 128, 0);
+		std::fill(info.Version, info.Version + 128, 0);
 
 		const auto& package = _packageMap.at(dir);
 		//take care not to overwrite the size of our structs, and make it null-terminated
@@ -85,7 +85,7 @@ int AssetToolsLibrary::CheckIfPackage(const char * dir, PackageInfo & info, bool
 
 char * AssetToolsLibrary::GetError()
 {
-	
+
 	const char* sampleString = _lastErrorString.c_str();
 	std::size_t len = strlen(sampleString) + sizeof(char);
 	char* newString = new char[len];
@@ -94,7 +94,7 @@ char * AssetToolsLibrary::GetError()
 
 
 	return newString;
-	
+
 }
 
 std::string AssetToolsLibrary::SafeGetError()
@@ -112,6 +112,7 @@ std::vector<AssetToolsLibrary::OutputPackageInfo> AssetToolsLibrary::GetPackages
 		p.Namespace = std::get<1>(package).Package;
 		p.Studio = std::get<1>(package).Studio;
 		p.Version = std::get<1>(package).Version;
+		p.Description = std::get<1>(package).Description;
 		output.push_back(p);
 	}
 	return output;
@@ -126,14 +127,14 @@ void AssetToolsLibrary::CreateJsonAsset(std::string filePath, std::string outPat
 	}
 
 	if (this->_packageMap.find(path.parent_path().parent_path()) != this->_packageMap.end()) {
-		
+
 		auto extension = path.extension();
 		auto package = _packageMap[path.parent_path().parent_path()];
 		auto nameOnly = path.stem().string();
-		CreateMetaFile(package.Package + "." + nameOnly, 
-			extension.string().substr(1, extension.string().length()-1), outPath);
+		CreateMetaFile(package.Package + "." + nameOnly,
+			extension.string().substr(1, extension.string().length() - 1), outPath);
 
-		
+
 	}
 	else {
 		throw HapticsLoadingException("Couldn't find the package associated with " + filePath);
@@ -142,7 +143,7 @@ void AssetToolsLibrary::CreateJsonAsset(std::string filePath, std::string outPat
 void AssetToolsLibrary::CreateMetaFile(std::string fileName, std::string fileType, std::string outpath)
 {
 	using namespace rapidjson;
-	
+
 	MetaResolver r(m_paths);
 	std::unique_ptr<MetaFile> result;
 	switch (StringFileType(fileType)) {
@@ -160,7 +161,7 @@ void AssetToolsLibrary::CreateMetaFile(std::string fileName, std::string fileTyp
 		return;
 	}
 
-	
+
 
 	Document d(kObjectType);
 
@@ -233,10 +234,10 @@ void AssetToolsLibrary::CreateBinaryAsset(std::string fileName, std::string file
 	}
 
 
-	auto res = result->ToHDF();
-	std::cout << res.DebugString() << '\n';
+//	auto res = result->ToHDF();
+	//std::cout << res.DebugString() << '\n';
 	std::string bytes;
-	res.SerializeToString(&bytes);
+//	res.SerializeToString(&bytes);
 	if (path != "") {
 		std::ofstream outfile(path, std::ofstream::binary);
 
@@ -244,39 +245,39 @@ void AssetToolsLibrary::CreateBinaryAsset(std::string fileName, std::string file
 			std::cout << "Couldn't open the path " << path << " for writing\n";
 
 		}
-		outfile.write(bytes.c_str(), res.ByteSize());
+		//outfile.write(bytes.c_str(), res.ByteSize());
 	}
 }
 
 void AssetToolsLibrary::buildPackagePaths(HapticDirectoryTools::PackageNode node, std::string prefix)
 {
-	
-		//if it has a namespace,
-		//then check if it had a parent namespace. 
-		if (node.Data.Namespace != "")
-		{
-			if (prefix == "")
-			{
-				m_paths[node.Namespace] = node.Data.Directory;
-			}
-			else
-			{
-				m_paths[prefix + "." + node.Namespace] = node.Data.Directory;
-			}
-		}
 
-		if (node.Children.size() == 0)
+	//if it has a namespace,
+	//then check if it had a parent namespace. 
+	if (node.Data.Namespace != "")
+	{
+		if (prefix == "")
 		{
-			return;
+			m_paths[node.Namespace] = node.Data.Directory;
 		}
-
-		for (auto child : node.Children)
+		else
 		{
-			//if PARENT is a toplevel node, we want to pass in just the parent name as the prefix
-			//if PARENT is a child node, we want to pass in the full history by adding it on
-			buildPackagePaths(child.second, prefix == "" ? node.Namespace : prefix + "." + node.Namespace);
+			m_paths[prefix + "." + node.Namespace] = node.Data.Directory;
 		}
+	}
 
-	
+	if (node.Children.size() == 0)
+	{
+		return;
+	}
+
+	for (auto child : node.Children)
+	{
+		//if PARENT is a toplevel node, we want to pass in just the parent name as the prefix
+		//if PARENT is a child node, we want to pass in the full history by adding it on
+		buildPackagePaths(child.second, prefix == "" ? node.Namespace : prefix + "." + node.Namespace);
+	}
+
+
 }
 

@@ -17,6 +17,7 @@ public:
 		std::string Studio;
 		std::string Namespace;
 		std::string Path;
+		std::string Description;
 		std::vector<std::string> Dependencies;
 	public:
 		std::string to_readable_string() const {
@@ -41,6 +42,7 @@ public:
 				d.AddMember("studio", StringRef(Studio), alloc);
 				d.AddMember("namespace", StringRef(Namespace), alloc);
 				d.AddMember("path", StringRef(Path), alloc);
+				d.AddMember("description", StringRef(Description), alloc);
 			}
 			assert(doc.IsArray());
 			doc.PushBack(d, alloc);

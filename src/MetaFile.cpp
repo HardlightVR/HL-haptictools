@@ -38,17 +38,17 @@ void MetaFile::Serialize(rapidjson::Document & doc) const
 	doc.AddMember("root_effect", effect, alloc);
 	
 }
-nsvr::detail::encoding::HapticDescriptionFile MetaFile::ToHDF()
-{
-	nsvr::detail::encoding::HapticDescriptionFile h;
-	serializeProtoT(*h.mutable_sequence_definitions(), m_sequences);
-	serializeProtoT(*h.mutable_pattern_definitions(), m_patterns);
-	serializeProtoT(*h.mutable_experience_definitions(), m_experiences);
-	
-	h.mutable_effect()->set_name(m_rootEffect.FullId);
-	h.mutable_effect()->set_type(GetFileType(m_rootEffect.FileType));
-	return h;
-}
+//nsvr::detail::encoding::HapticDescriptionFile MetaFile::ToHDF()
+//{
+//	nsvr::detail::encoding::HapticDescriptionFile h;
+//	serializeProtoT(*h.mutable_sequence_definitions(), m_sequences);
+//	serializeProtoT(*h.mutable_pattern_definitions(), m_patterns);
+//	serializeProtoT(*h.mutable_experience_definitions(), m_experiences);
+//	
+//	h.mutable_effect()->set_name(m_rootEffect.FullId);
+//	h.mutable_effect()->set_type(GetFileType(m_rootEffect.FileType));
+//	return h;
+//}
 void MetaFile::AddSequenceDefinition(std::string name, SequenceData data)
 {
 	m_sequences.push_back(DataTuple<SequenceData>(name, data));
