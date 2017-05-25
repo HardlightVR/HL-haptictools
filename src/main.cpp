@@ -17,10 +17,12 @@ int main(int argc, char* argv[])
 	description.add_options()
 		("help", "produce this message")
 		("root-path", po::value<std::string>()->required(), "set root haptics directory")
-		("list-packages", "list out the haptic packages present")
-		("json", "encode output in json format")
-		("generate-asset", po::value<std::string>(), "specify effect to generate binary asset")
-		("out-file", po::value<std::string>(), "specify out path of binary asset")
+		("list-packages", "list the haptic packages present")
+		("json", "encode output in json format [deprecated, used by default now]")
+		("out-file", po::value<std::string>(), "write output to a file path specified with this option")
+		("generate-asset", po::value<std::string>(), "create a single HDF from the specified file, written to standard out as JSON")
+		("convert-package", po::value<std::string>(), "Specify an entire package to be converted to a target asset format. Specify the package name here, e.g. \"ns.demos\"")
+		("hdf-out", po::value<std::string>(), "generate a mirror of the package directory structure passed with --convert-package, where every file is an HDF asset, in the directory specified here")
 	;
 	
 	po::variables_map vm;
@@ -85,22 +87,29 @@ int main(int argc, char* argv[])
 	else if (vm.count("generate-asset")) {
 		std::string outpath = vm.count("out-file") > 0 ? vm["out-file"].as<std::string>() : "";
 		
-		if (vm.count("json")) {
-			try {
-				assetTool.CreateJsonAsset(vm["generate-asset"].as<std::string>(), outpath);
-			}
-			catch (const HapticsLoadingException& e) {
-				std::cout << "Error: "<<e.what() << '\n';
-			}
+	
+		try {
+			assetTool.CreateJsonAsset(vm["generate-asset"].as<std::string>(), outpath);
 		}
-		else {
-			try {
-				assetTool.CreateBinaryAsset(vm["generate-asset"].as<std::string>(), outpath);
-			}
-			catch (const HapticsLoadingException& e) {
-				std::cout << "Error: " << e.what() << '\n';
-			}
+		catch (const HapticsLoadingException& e) {
+			std::cout << "Error: "<<e.what() << '\n';
 		}
+		
+		
+
+	} else if (vm.count("convert-package")) {
+		if (!vm.count("hdf-out")) {
+			std::cout << "Error: You must specify the output format. For now, only hdf-out is supported.\n";
+			return 0;
+		}
+		const std::string& outPath = vm["hdf-out"].as<std::string>();
+		const std::string& potentialPackageId = vm["convert-package"].as<std::string>();
+		if (!assetTool.PackageExists(potentialPackageId)) {
+			std::cout << "The package ID [" << potentialPackageId << "] does not exist in root directory [" << vm["root-path"].as<std::string>() << "].\n";
+			return 0;
+		}
+		assetTool.CreateHDFPackageStructure(outPath);
+		assetTool.ConvertPackageToHDFs(potentialPackageId, outPath);
 
 	}
 	

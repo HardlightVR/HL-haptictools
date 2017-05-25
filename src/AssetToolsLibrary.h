@@ -60,6 +60,9 @@ public:
 	void CreateMetaFile(std::string fileName, std::string fileType, std::string outPath);
 	void CreateBinaryAsset(std::string filePath, std::string outPath);
 	void CreateBinaryAsset(std::string fileName, std::string fileType, std::string outPath);
+	bool PackageExists(const std::string& packageId);
+	bool CreateHDFPackageStructure(std::string outDir);
+	bool ConvertPackageToHDFs(std::string packageId, const std::string& outPath);
 private:
 	std::unique_ptr<HapticDirectoryTools::HapticEnumerator> _fileEnumerator;
 	HapticDirectoryTools::PackageNode _rootPackage;
