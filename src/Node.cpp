@@ -6,8 +6,7 @@
 #include "HapticDirectoryTools.h"
 using namespace rapidjson;
 
-SequenceNode::SequenceNode(){}
-SequenceNode::~SequenceNode(){}
+
 void SequenceNode::Serialize(rapidjson::Value & val, rapidjson::Document& doc) const
 {
 	assert(val.IsObject());
@@ -51,8 +50,7 @@ void SequenceNode::Deserialize(rapidjson::Value& doc)
 //	newEffect->set_effect(m_effect);
 //}
 
-PatternNode::PatternNode(){}
-PatternNode::~PatternNode(){}
+
 
 void PatternNode::Serialize(rapidjson::Value & val, rapidjson::Document & doc) const
 {
@@ -104,8 +102,7 @@ void PatternNode::Deserialize(rapidjson::Value & doc)
 	m_strength = parseKeyOrDefault<float>(doc, "strength", 1.0f);
 }
 
-ExperienceNode::ExperienceNode(){}
-ExperienceNode::~ExperienceNode(){}
+
 //void ExperienceNode::Serialize(nsvr::detail::encoding::ExperienceDefinitions & d) const
 //{
 //	auto newExp = d.mutable_experience_nodes()->Add();
