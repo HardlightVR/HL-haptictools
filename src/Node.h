@@ -1,15 +1,12 @@
 #pragma once
 #include <vector>
 #include "rapidjson\fwd.h"
-class INode {
-	virtual void Serialize(rapidjson::Value& val, rapidjson::Document& doc) const = 0;
-	virtual void Deserialize(rapidjson::Value& doc) = 0;
-};
 
-class SequenceNode : public INode{
+
+class SequenceNode {
 public:
-	void Serialize(rapidjson::Value& val, rapidjson::Document& doc) const override;
-	void Deserialize(rapidjson::Value& doc) override;
+	void Serialize(rapidjson::Value& val, rapidjson::Document& doc) const;
+	void Deserialize(rapidjson::Value& doc) ;
 private:
 	float m_time;
 	std::string m_effect;
@@ -17,11 +14,11 @@ private:
 	float m_duration;
 };
 
-class PatternNode: public INode {
+class PatternNode {
 public:
 
-	void Serialize(rapidjson::Value& val, rapidjson::Document& doc) const override;
-	void Deserialize(rapidjson::Value& doc) override;
+	void Serialize(rapidjson::Value& val, rapidjson::Document& doc) const;
+	void Deserialize(rapidjson::Value& doc);
 	std::string Sequence() const { return m_sequence; }
 private:
 	float m_time;
@@ -30,12 +27,12 @@ private:
 	float m_strength;
 };
 
-class ExperienceNode : public INode {
+class ExperienceNode {
 public:
 	
 	
-	void Serialize(rapidjson::Value& val, rapidjson::Document& doc) const override;
-	void Deserialize(rapidjson::Value& doc) override;
+	void Serialize(rapidjson::Value& val, rapidjson::Document& doc) const;
+	void Deserialize(rapidjson::Value& doc);
 	std::string Pattern() const { return m_pattern; }
 private:
 	float m_time;
