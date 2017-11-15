@@ -15,19 +15,12 @@ using namespace boost::filesystem;
 
 
 
-PackageNode::PackageNode()
-{
-}
 
 PackageNode::PackageNode(HapticFileNameList data)
 {
 	this->Data = data;
 	this->Namespace = data.Namespace;
 
-}
-
-PackageNode::~PackageNode()
-{
 }
 
 
@@ -41,17 +34,6 @@ _basePath(path)
 {
 }
 
-HapticEnumerator::~HapticEnumerator() {
-
-}
-
-HapticConfig::HapticConfig()
-{
-}
-
-HapticConfig::~HapticConfig()
-{
-}
 
 
 

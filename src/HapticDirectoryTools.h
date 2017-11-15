@@ -77,9 +77,9 @@ namespace HapticDirectoryTools {
 	class PackageNode
 	{
 	public:
-		PackageNode();
+		PackageNode() = default;
 		PackageNode(HapticFileNameList data);
-		~PackageNode();
+	
 		std::string Namespace;
 		HapticFileNameList Data;
 		std::unordered_map<std::string, PackageNode> Children;
@@ -87,14 +87,12 @@ namespace HapticDirectoryTools {
 
 	class HapticConfig : public IJsonSerializable{
 	public:
-		HapticConfig();
-		~HapticConfig();
 		std::string Version;
 		std::string Studio;
 		std::string Package;
 		std::string Description;
-		virtual void Serialize(const rapidjson::Value& root);
-		virtual void Deserialize(const rapidjson::Value& root);
+		virtual void Serialize(const rapidjson::Value& root) override;
+		virtual void Deserialize(const rapidjson::Value& root) override;
 	};
 
 	
@@ -102,10 +100,9 @@ namespace HapticDirectoryTools {
 	public:
 		static const char* DirectoryNotFoundString;
 
-		typedef std::tuple<boost::filesystem::path, HapticConfig> package;
+		using package = std::tuple<boost::filesystem::path, HapticConfig>;
 		
 		HapticEnumerator(const std::string& path);
-		~HapticEnumerator();
 
 		PackageNode GeneratePackageTree(const std::vector<HapticFileNameList>& enumLists) const;
 

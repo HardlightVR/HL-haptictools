@@ -3,6 +3,7 @@
 #include "rapidjson\fwd.h"
 
 
+
 class SequenceNode {
 public:
 	void Serialize(rapidjson::Value& val, rapidjson::Document& doc) const;
@@ -44,3 +45,5 @@ private:
 using SequenceData = std::vector<SequenceNode>;
 using PatternData = std::vector<PatternNode>;
 using ExperienceData = std::vector<ExperienceNode>;
+
+
